@@ -1,0 +1,13 @@
+.App {
+  text-align: center;
+}
+
+.eclipse-button {
+  border: none;
+  color: black;
+  padding: 15px 15px;
+  border-radius: 50%; /* This creates the eclipse shape */
+  font-size: 16px;
+  cursor: pointer;
+  margin: 10px 0px;
+}
