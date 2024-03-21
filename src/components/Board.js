@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Cell from './Cell';
+import WinnerModal from './WinnerModal';
+import Confetti from 'react-confetti';
 
 const ROWS = 6;
 const COLS = 7;
@@ -10,10 +12,21 @@ const Board = () => {
     const [boardState, setBoardState] = useState(initialBoardState);
     const [turnOfRed, setTurnOfRed] = useState(true);
     const [winner, setWinner] = useState(null);
+    const [showConfetti, setShowConfetti] = useState(false); // State to control confetti visibility
+    const [showModal, setShowModal] = useState(false); // State to control modal visibility
 
     useEffect(() => {
         checkForWinner();
     }, [boardState]);
+
+    useEffect(() => {
+        if (winner) {
+            // When winner is set, show confetti
+            setShowConfetti(true);
+            // Show modal
+            setShowModal(true);
+        }
+    }, [winner]);
 
     const handleCellClick = (row, col) => {
         if (winner || boardState[row][col]) return;
@@ -57,7 +70,7 @@ const Board = () => {
     };
 
     const checkLine = (row, col, deltaRow, deltaCol, color) => {
-        let consecutive = 1; // Change const to let
+        let consecutive = 1;
         let r = row + deltaRow;
         let c = col + deltaCol;
 
@@ -79,6 +92,14 @@ const Board = () => {
         return consecutive >= WINNING_LENGTH;
     };
 
+    const resetGame = () => {
+        setShowConfetti(false);
+        setShowModal(false);
+        setWinner(null);
+        setBoardState(initialBoardState);
+        setTurnOfRed(true);
+    };
+
     const renderCells = () => {
         return boardState.map((row, rowIndex) => (
             <div key={`row-${rowIndex}`} className="row">
@@ -96,10 +117,16 @@ const Board = () => {
     return (
         <div>
             <h3>Board</h3>
-            <div className='container d-flex'>
+            <div className='container d-flex board'>
                 {renderCells()}
             </div>
-            {winner && <div>{winner.toUpperCase()} wins!</div>}
+
+            {showConfetti && <Confetti style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }} />}
+            <WinnerModal
+                show={showModal}
+                onHide={resetGame}
+                winner={winner}
+            />
         </div>
     );
 };

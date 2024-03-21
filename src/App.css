@@ -2,6 +2,15 @@
   text-align: center;
 }
 
+body {
+  height: 100vh;
+}
+
+.board {
+  background-color: #888;
+  border: 1px solid black;
+}
+
 .eclipse-button {
   border: none;
   color: black;
@@ -10,4 +19,6 @@
   font-size: 16px;
   cursor: pointer;
   margin: 10px 0px;
+  outline: 2px solid transparent;
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
 }
